@@ -17,7 +17,6 @@ $app->get('/', function() use ($app) {
 });
 
 $app->post('/contatos', function(Request $request) use ($app) {
-
     $data = $request->getContent();
     parse_str($data, $out);
 
@@ -31,27 +30,22 @@ $app->post('/contatos', function(Request $request) use ($app) {
 });
 
 $app->get('/contatos', function() use ($app) {
-
     $stmt = $app['db']->query("SELECT * FROM contatos");
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     return $app->json($result);
-
 });
 
 $app->get('/contatos/{id}', function($id) use ($app) {
-
     $stmt = $app['db']->prepare("SELECT * FROM contatos WHERE id=:id");
     $stmt->bindParam('id',$id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return $app->json($result);
-
 });
 
 $app->put('/contatos/{id}', function(Request $request, $id) use ($app) {
-
     $data = $request->getContent();
     parse_str($data, $out);
 
@@ -67,14 +61,11 @@ $app->put('/contatos/{id}', function(Request $request, $id) use ($app) {
 
 
 $app->delete('/contatos/{id}', function($id) use ($app) {
-
     $stmt = $app['db']->prepare("DELETE FROM contatos WHERE id=:id");
     $stmt->bindParam('id',$id);
     $stmt->execute();
 
     return $app->json(array('success'=>true));
-
 });
-
 
 $app->run();

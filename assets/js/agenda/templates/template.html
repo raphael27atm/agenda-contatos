@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="App">
+<html ng-app="app">
     <head>
         <title>Agenda</title>
 
@@ -40,7 +40,7 @@
                 <h3 class="text-muted">Agenda</h3>
             </div>
 
-            <div ng-controller="AgendaCtrl">
+            <div ng-controller="AgendaController">
                 <div ng-view></div>
             </div>
         </div> <!-- /container -->
@@ -57,8 +57,9 @@
         <script src="assets/js/bootstrap.js"></script>
         <script>var $jQuery = jQuery.noConflict();</script>
 
-        <script src="assets/js/agenda/Agenda.js"></script>
-        <script src="assets/js/agenda/AgendaSrv.js"></script>
-        <script src="assets/js/agenda/AgendaCtrl.js"></script>
+        <script src="assets/js/agenda/agenda.js"></script>
+        <script src="assets/js/agenda/config.js"></script>
+        <script src="assets/js/agenda/service.js"></script>
+        <script src="assets/js/agenda/controller.js"></script>
     </body>
 </html>
