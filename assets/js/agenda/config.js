@@ -12,7 +12,7 @@
             templateUrl: 'assets/js/agenda/templates/index.html'
           })
           .when('/contato/new', {
-            templateUrl: 'assets/js/agenda/templates/novo.html'
+            templateUrl: 'assets/js/agenda/templates/adicionar.html'
           })
           .when('/contato/edit/:id', {
             templateUrl: 'assets/js/agenda/templates/editar.html'

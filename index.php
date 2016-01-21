@@ -20,7 +20,7 @@ $app->post('/contatos', function(Request $request) use ($app) {
     $data = $request->getContent();
     parse_str($data, $out);
 
-    $stmt = $app['db']->prepare("INSERT INTO contatos(name,email,cellphone) VALUE(:name, :email, :cellphone)");
+    $stmt = $app['db']->prepare("INSERT INTO contacts(name, email, cellphone) VALUE(:name, :email, :cellphone)");
     $stmt->bindParam('name', $out['name']);
     $stmt->bindParam('email', $out['email']);
     $stmt->bindParam('cellphone', $out['cellphone']);
@@ -30,14 +30,14 @@ $app->post('/contatos', function(Request $request) use ($app) {
 });
 
 $app->get('/contatos', function() use ($app) {
-    $stmt = $app['db']->query("SELECT * FROM contatos");
+    $stmt = $app['db']->query("SELECT * FROM contacts");
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     return $app->json($result);
 });
 
 $app->get('/contatos/{id}', function($id) use ($app) {
-    $stmt = $app['db']->prepare("SELECT * FROM contatos WHERE id=:id");
+    $stmt = $app['db']->prepare("SELECT * FROM contacts WHERE id=:id");
     $stmt->bindParam('id',$id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -49,7 +49,7 @@ $app->put('/contatos/{id}', function(Request $request, $id) use ($app) {
     $data = $request->getContent();
     parse_str($data, $out);
 
-    $stmt = $app['db']->prepare("UPDATE contatos SET name=:name, email=:email, cellphone=:cellphone WHERE id=:id");
+    $stmt = $app['db']->prepare("UPDATE contacts SET name=:name, email=:email, cellphone=:cellphone WHERE id=:id");
     $stmt->bindParam('id',$id);
     $stmt->bindParam('name', $out['name']);
     $stmt->bindParam('email', $out['email']);
@@ -61,7 +61,7 @@ $app->put('/contatos/{id}', function(Request $request, $id) use ($app) {
 
 
 $app->delete('/contatos/{id}', function($id) use ($app) {
-    $stmt = $app['db']->prepare("DELETE FROM contatos WHERE id=:id");
+    $stmt = $app['db']->prepare("DELETE FROM contacts WHERE id=:id");
     $stmt->bindParam('id',$id);
     $stmt->execute();
 
