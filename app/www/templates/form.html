@@ -1,0 +1,18 @@
+<ion-view view-title="Editar Contato">
+	<ion-content>
+		<div class="list card">
+			<div class="item item-input">
+				<input type="text" placeholder="Nome" ng-model="contact.name">
+			</div>
+			<div class="item item-input">
+				<input type="text" placeholder="Email" ng-model="contact.email">
+			</div>
+			<div class="item item-input">
+				<input type="text" placeholder="Celular" ng-model="contact.cellphone">
+			</div>
+		</div>
+		<div class="padding">
+			<button class="button button-block button-positive" ng-click="save()">Save</button>
+		</div>
+	</ion-content>
+</ion-view>

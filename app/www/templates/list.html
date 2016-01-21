@@ -1,0 +1,20 @@
+<ion-view view-title="Meus Contatos">
+  <ion-content>
+    <ion-list show-reorder="reordering">
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="contact in contacts track by contact.id" href="#/edit/{{contact.id}}">
+        <h2>{{contact.name}}</h2>
+        <p>{{contact.email}}</p>
+        <p>{{contact.cellphone}}</p>
+        <i class="icon ion-arrow-right-b"></i>
+
+        <!--<ion-reorder-button class="ion-drag" on-reorder="move(contact, $fromIndex, $toIndex)"></ion-reorder-button>-->
+        <ion-option-button class="button-assertive icon-left ion-trash-b" ng-click="remove(contact.id)">Delete</ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <div class="bar bar-footer bar-stable">
+    <a href="#/add" class="button button-assertive icon-left ion-compose">Novo Contato</a>
+    <!--<button class="button button-light icon-left ion-shuffle" ng-click="toggleReordering()">Reorganizar</button>-->
+  </div>
+</ion-view>

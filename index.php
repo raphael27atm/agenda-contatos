@@ -16,19 +16,6 @@ $app->get('/', function() use ($app) {
     return new Response(file_get_contents('assets/js/agenda/templates/template.html'), 200);
 });
 
-$app->post('/contatos', function(Request $request) use ($app) {
-    $data = $request->getContent();
-    parse_str($data, $out);
-
-    $stmt = $app['db']->prepare("INSERT INTO contacts(name, email, cellphone) VALUE(:name, :email, :cellphone)");
-    $stmt->bindParam('name', $out['name']);
-    $stmt->bindParam('email', $out['email']);
-    $stmt->bindParam('cellphone', $out['cellphone']);
-    $stmt->execute();
-
-    return $app->json(array('success'=>true));
-});
-
 $app->get('/contatos', function() use ($app) {
     $stmt = $app['db']->query("SELECT * FROM contacts");
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,6 +30,19 @@ $app->get('/contatos/{id}', function($id) use ($app) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return $app->json($result);
+});
+
+$app->post('/contatos', function(Request $request) use ($app) {
+    $data = $request->getContent();
+    parse_str($data, $out);
+
+    $stmt = $app['db']->prepare("INSERT INTO contacts(name, email, cellphone) VALUE(:name, :email, :cellphone)");
+    $stmt->bindParam('name', $out['name']);
+    $stmt->bindParam('email', $out['email']);
+    $stmt->bindParam('cellphone', $out['cellphone']);
+    $stmt->execute();
+
+    return $app->json(array('success'=>true));
 });
 
 $app->put('/contatos/{id}', function(Request $request, $id) use ($app) {
