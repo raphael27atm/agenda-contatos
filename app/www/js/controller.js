@@ -4,61 +4,59 @@
   angular
     .module('app')
     .controller('ListController', ListController)
-    .controller('AddController', ListController)
-    .controller('EditController', ListController);
+    .controller('AddController', AddController);
 
   ListController.$inject = ['$scope', 'Agenda'];
   function ListController($scope, Agenda){
     $scope.reordering = false;
 
-    function refreshContacts() {
-      Agenda.getAll().then(function(contacts) {
-        $scope.contacts = contacts;
+    $scope.contacts = [];
+
+    Agenda.query(function (data) {
+      $scope.contacts = data;
+    }, function (err) {
+      console.log(err);
+    });
+
+    $scope.remove = function(contact) {
+      Agenda.remove({ id: contact.id }, function() {
+        $scope.contacts.forEach(function(p, index) {
+          if (p.id == contact.id) $scope.contacts.splice(index, 1);
+        });
+        console.log('success'+ contact.name + ' Removido');
       });
     }
 
-    refreshContacts();
-
-    $scope.remove = function(id) {
-      Agenda.destroy(id).then(refreshContacts);
-    };
-
-    /*$scope.move = function(note, fromIndex, toIndex) {
-      NoteStore.move(note, fromIndex, toIndex);
-    };
-
-    $scope.toggleReordering = function() {
-      $scope.reordering = !$scope.reordering;
-    };*/
   }
 
-  AddController.$inject = ['$scope', '$state', 'Agenda'];
-  function AddController($scope, $state, Agenda){
-    $scope.contact = {
-      name: '',
-      email: '',
-      cellphone: ''
-    };
+  AddController.$inject = ['$scope', '$location','$stateParams', 'Agenda'];
+  function AddController($scope, $location, $stateParams,Agenda){
+    $scope.contact = new Agenda();
+    $scope.contacts = [];
 
-    $scope.save = function() {
-      Agenda.create($scope.contact).then(function() {
-        $state.go('/list');
+    if ($stateParams.id) {
+      Agenda.get({ id: $stateParams.id}, function(data) {
+        console.log(data);
+        $scope.contact = data;
+      }, function(erro) {
+        console.log(erro);
       });
-    };
-  }
+    }
 
+    $scope.save = function(contact) {
+      if ($scope.contact.id) {
+        Agenda.update({id: $scope.contact.id}, contact);
+        $location.path('/list');
+        console.log('Contato Atualizado com sucesso');
+      } else {
+        $scope.contact.$save().then(function(response) {
+          $scope.contacts.push(response);
+          $location.path('/list');
+          console.log(response);
+        });
+      }
+    }
 
-  EditController.$inject = ['$scope', '$state', 'Agenda'];
-  function EditController($scope, $state, Agenda){
-    Agenda.get($state.params.id).then(function(contact) {
-      $scope.contact = contact;
-    });
-
-    $scope.save = function() {
-      Agenda.update($scope.contact).then(function() {
-        $state.go('list');
-      });
-    };
   }
 
 })();

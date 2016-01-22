@@ -1,7 +1,7 @@
 (function(){
   "use strict";
 
-  var app = angular.module('app', ['ionic']);
+  var app = angular.module('app', ['ionic','ngResource']);
 
   app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {

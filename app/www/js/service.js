@@ -5,37 +5,22 @@
     .module('app')
     .factory('Agenda', Agenda);
 
-  Agenda.$inject = ['$http','SERVER_API'];
-  function Agenda($http, SERVER_API) {
-    return {
-      getAll: function() {
-        return $http.get(SERVER_API).then(function(response) {
-          return response.data;
-        });
+  Agenda.$inject = ['$resource','SERVER_API'];
+  function Agenda($resource, SERVER_API) {
+    var Agenda = $resource( SERVER_API, {id: '@id'},{
+      'headers':{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With'
       },
+      'get':  {method:'GET'},
+      'query':  {method:'GET', isArray:true},
+      'save':   {method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'}},
+      'update': { method: 'PUT', headers:{ 'Content-Type': 'application/x-www-form-urlencoded'}},
+      'delete': {method:'DELETE', headers:{'Content-Type': 'application/x-www-form-urlencoded'}}
+    });
 
-      get: function(id) {
-        return $http.get(SERVER_API +'/'+ id).then(function(response) {
-          return response.data;
-        });
-      },
-
-      move: function(contact, fromIndex, toIndex) {
-        // TO DO
-      },
-
-      create: function(contact) {
-        return $http.post(SERVER_API, contact);
-      },
-
-      update: function(contact) {
-        return $http.put(SERVER_API +'/'+ contact.id, contact);
-      },
-
-      destroy: function(id) {
-        return $http.delete(SERVER_API +'/'+ id);
-      }
-    };
+    return Agenda;
   }
 
 })();

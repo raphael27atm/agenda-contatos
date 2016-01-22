@@ -3,7 +3,7 @@
 
   angular
     .module('app')
-    .constant('SERVER_API','http://localhost:8888/github/agenda/index.php/contatos')
+    .constant('SERVER_API','http://localhost/php/agenda-contatos/index.php/contatos/:id')
     .config(config);
 
     function config($stateProvider, $urlRouterProvider){
@@ -11,18 +11,14 @@
         url: '/list',
         templateUrl: 'templates/list.html',
         controller: 'ListController'
-      });
-
-      $stateProvider.state('add', {
+      }).state('add', {
         url: '/add',
         templateUrl: 'templates/form.html',
         controller: 'AddController'
-      });
-
-      $stateProvider.state('edit', {
+      }).state('edit', {
         url: '/edit/:id',
         templateUrl: 'templates/form.html',
-        controller: 'EditController'
+        controller: 'AddController'
       });
 
       $urlRouterProvider.otherwise('/list');
