@@ -6,7 +6,7 @@
     .constant('SERVER_API','http://localhost/php/agenda-contatos/index.php/contatos/:id')
     .config(config);
 
-    function config($stateProvider, $urlRouterProvider){
+    function config($stateProvider, $urlRouterProvider,$httpProvider){
       $stateProvider.state('list', {
         url: '/list',
         templateUrl: 'templates/list.html',
@@ -22,5 +22,20 @@
       });
 
       $urlRouterProvider.otherwise('/list');
+
+      // Intercept POST requests, convert to standard form encoding
+      $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+      $httpProvider.defaults.transformRequest.unshift(function (data, headersGetter) {
+        var key, result = [];
+
+        if (typeof data === "string")
+          return data;
+
+        for (key in data) {
+          if (data.hasOwnProperty(key))
+            result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+        }
+        return result.join("&");
+      });
     }
 })();

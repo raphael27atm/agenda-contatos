@@ -29,10 +29,9 @@
 
   }
 
-  AddController.$inject = ['$scope', '$location','$stateParams', 'Agenda'];
-  function AddController($scope, $location, $stateParams,Agenda){
-    $scope.contact = new Agenda();
-    $scope.contacts = [];
+  AddController.$inject = ['$scope', '$location','$stateParams', 'Agenda','AgendaCreate'];
+  function AddController($scope, $location, $stateParams,Agenda,AgendaCreate){
+    $scope.contact = {};
 
     if ($stateParams.id) {
       Agenda.get({ id: $stateParams.id}, function(data) {
@@ -44,17 +43,13 @@
     }
 
     $scope.save = function(contact) {
-      if ($scope.contact.id) {
-        Agenda.update({id: $scope.contact.id}, contact);
+      AgendaCreate.create($scope.contact).then(function(data) {
         $location.path('/list');
-        console.log('Contato Atualizado com sucesso');
-      } else {
-        $scope.contact.$save().then(function(response) {
-          $scope.contacts.push(response);
-          $location.path('/list');
-          console.log(response);
-        });
-      }
+        console.log(data.message);
+        if (data.include) $scope.contact = {};
+      }).catch(function(err) {
+        console.log(err.message);
+      });
     }
 
   }
